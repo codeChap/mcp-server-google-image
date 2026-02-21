@@ -126,12 +126,13 @@ struct GeminiResponseContent {
 struct GeminiResponsePart {
     #[serde(default)]
     text: Option<String>,
-    #[serde(default)]
+    #[serde(default, rename = "inlineData")]
     inline_data: Option<GeminiResponseInlineData>,
 }
 
 #[derive(Deserialize)]
 struct GeminiResponseInlineData {
+    #[serde(rename = "mimeType")]
     mime_type: String,
     data: String,
 }
