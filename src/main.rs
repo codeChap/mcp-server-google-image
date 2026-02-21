@@ -144,7 +144,7 @@ struct GenerateImageParams {
     #[schemars(description = "Text description of the desired image")]
     prompt: String,
     #[schemars(
-        description = "Model to use. Options: \"gemini-2.5-flash-image\" (default, fast), \"gemini-3-pro-image-preview\" (professional quality)"
+        description = "Model to use. Options: \"gemini-3-pro-image-preview\" (default, professional quality), \"gemini-2.5-flash-image\" (faster, lower cost)"
     )]
     model: Option<String>,
     #[schemars(
@@ -162,7 +162,7 @@ struct EditImageParams {
     #[schemars(description = "Natural language edit instructions")]
     prompt: String,
     #[schemars(
-        description = "Model to use. Options: \"gemini-2.5-flash-image\" (default, fast), \"gemini-3-pro-image-preview\" (professional quality)"
+        description = "Model to use. Options: \"gemini-3-pro-image-preview\" (default, professional quality), \"gemini-2.5-flash-image\" (faster, lower cost)"
     )]
     model: Option<String>,
     #[schemars(
@@ -392,7 +392,7 @@ impl GoogleImageServer {
         &self,
         Parameters(params): Parameters<GenerateImageParams>,
     ) -> Result<CallToolResult, McpError> {
-        let model = params.model.unwrap_or_else(|| "gemini-2.5-flash-image".to_string());
+        let model = params.model.unwrap_or_else(|| "gemini-3-pro-image-preview".to_string());
 
         let parts = vec![GeminiPart::Text { text: params.prompt }];
 
@@ -415,7 +415,7 @@ impl GoogleImageServer {
         &self,
         Parameters(params): Parameters<EditImageParams>,
     ) -> Result<CallToolResult, McpError> {
-        let model = params.model.unwrap_or_else(|| "gemini-2.5-flash-image".to_string());
+        let model = params.model.unwrap_or_else(|| "gemini-3-pro-image-preview".to_string());
 
         let (image_bytes, filename) = match self.fetch_image_bytes(&params.image_url).await {
             Ok(result) => result,
