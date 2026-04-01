@@ -451,22 +451,15 @@ impl GoogleImageServer {
 #[tool_handler]
 impl ServerHandler for GoogleImageServer {
     fn get_info(&self) -> ServerInfo {
-        ServerInfo {
-            protocol_version: ProtocolVersion::default(),
-            capabilities: ServerCapabilities::builder().enable_tools().build(),
-            server_info: Implementation {
-                name: "mcp-server-google-image".to_string(),
-                title: None,
-                version: env!("CARGO_PKG_VERSION").to_string(),
-                icons: None,
-                website_url: None,
-            },
-            instructions: Some(
+        ServerInfo::new(ServerCapabilities::builder().enable_tools().build())
+            .with_server_info(Implementation::new(
+                "mcp-server-google-image",
+                env!("CARGO_PKG_VERSION"),
+            ))
+            .with_instructions(
                 "Google Gemini image generation server. Use generate_image to create images from text prompts, \
-                 or edit_image to modify existing images with natural language instructions."
-                    .to_string(),
-            ),
-        }
+                 or edit_image to modify existing images with natural language instructions.",
+            )
     }
 }
 
